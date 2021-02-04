@@ -1,15 +1,13 @@
 package io.agileintelligence.ppmtool.web;
 
 import io.agileintelligence.ppmtool.domain.Project;
+import io.agileintelligence.ppmtool.exceptions.ProjectIdException;
 import io.agileintelligence.ppmtool.service.MapValidationErrorService;
 import io.agileintelligence.ppmtool.service.ProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -38,4 +36,37 @@ public class ProjectController {
         return new ResponseEntity<Project>(project1, HttpStatus.CREATED);
 
     }
+
+
+
+
+    @GetMapping("/{projectId}")
+    public ResponseEntity<?> getProjectById(@PathVariable String projectId){
+
+        Project project=projectService.findProjectByIdentifier(projectId.toUpperCase());
+        if(project==null){
+            throw new ProjectIdException("Project ID '"+projectId.toUpperCase()+"' doesn't exist");
+        }
+        return new ResponseEntity<Project>(project, HttpStatus.OK);
+    }
+
+
+    /* note: Iterable direct converts to json*/
+    @GetMapping("/all")
+    public Iterable<Project> getAllProjects(){
+        return projectService.findAllProjects();
+    }
+
+
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<?> deleteProject(@PathVariable String projectId){
+        projectService.deleteProjectByIdentifier(projectId.toUpperCase());
+        return new ResponseEntity<String>("project with id:"+projectId.toUpperCase()+" delete successfully", HttpStatus.OK);
+    }
+
+
+
+
+
+
 }
