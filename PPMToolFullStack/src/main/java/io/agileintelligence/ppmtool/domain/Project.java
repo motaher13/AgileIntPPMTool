@@ -21,7 +21,7 @@ public class Project {
     /* note: */
     @NotBlank(message ="Project Identifier is required")
     @Size(min = 4, max = 5, message = "Please set 4 to 5 char")
-    @Column(updatable = false, unique = true)
+    @Column(updatable = false, unique = true) /* note: this unique constraint works in database level, not in jpa*/
     private String projectIdentifier;
 
     @NotBlank(message = "Project description is required")

@@ -1,6 +1,7 @@
 package io.agileintelligence.ppmtool.service;
 
 import io.agileintelligence.ppmtool.domain.Project;
+import io.agileintelligence.ppmtool.exceptions.ProjectIdException;
 import io.agileintelligence.ppmtool.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,11 @@ public class ProjectService {
     }
 
     public Project saveOrUpdateProject(Project project){
-        return this.projectRepository.save(project);
+        try {
+            project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            return this.projectRepository.save(project);
+        }catch (Exception e){
+            throw new ProjectIdException(" Project ID '"+project.getProjectIdentifier().toUpperCase()+"' already exists");
+        }
     }
 }
