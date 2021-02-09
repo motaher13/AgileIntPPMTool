@@ -1,0 +1,13 @@
+note: 
+
+// install react
+npm install -g create-react-app
+
+// initiate a react project
+create-react-app project_name
+
+// include bootstrap
+npm install bootstrap
+
+// install react router
+npm install react-router-dom
