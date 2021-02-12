@@ -11,3 +11,9 @@ npm install bootstrap
 
 // install react router
 npm install react-router-dom
+
+// install redux
+npm i redux
+npm i react-redux redux-thunk
+
+ 

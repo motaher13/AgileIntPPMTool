@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 
 class AddProject extends Component {
     constructor(){
-        /* note: */
         super();
+        /* note what is state, how works -> https://blog.logrocket.com/a-guide-to-usestate-in-react-ecb9952e406c/ */
         this.state={
             projectName: "",
             projectIdentifier: "",
@@ -12,6 +12,8 @@ class AddProject extends Component {
             end_date:"" 
         };
 
+        /* note: why need to bind -> https://www.freecodecamp.org/news/this-is-why-we-need-to-bind-event-handlers-in-class-components-in-react-f7ea1a6f93eb/ */
+        /* note: how to convert -> https://medium.com/swlh/building-controlled-forms-using-functional-components-in-react-965d033a89bd */
         this.onChange=this.onChange.bind(this);
         this.onSubmit=this.onSubmit.bind(this);
     }
