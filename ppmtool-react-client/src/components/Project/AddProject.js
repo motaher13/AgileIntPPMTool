@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {createProject} from '../../actions/projectActions';
-
+import classnames from "classnames";
 
 class AddProject extends Component {
     constructor(){
@@ -13,7 +13,8 @@ class AddProject extends Component {
             projectIdentifier: "",
             description: "",
             start_date:"",
-            end_date:"" 
+            end_date:"" ,
+            errors: {}
         };
 
         /* note: why need to bind -> https://www.freecodecamp.org/news/this-is-why-we-need-to-bind-event-handlers-in-class-components-in-react-f7ea1a6f93eb/ */
@@ -21,6 +22,15 @@ class AddProject extends Component {
         this.onChange=this.onChange.bind(this);
         this.onSubmit=this.onSubmit.bind(this);
     }
+
+    //life cycle hooks
+    /* note: after submit new data will come to the component. then this one will be called */
+    componentWillReceiveProps(nextProps){
+        if(nextProps.errors){
+            this.setState({errors:nextProps.errors})
+        }
+    }
+
 
     /* note: */
     onChange(e){
@@ -40,6 +50,8 @@ class AddProject extends Component {
     }
     
     render(){
+        const {errors} =  this.state;
+        
     return (
         
         <div>
@@ -63,25 +75,56 @@ class AddProject extends Component {
                             <h5 className="display-4 text-center">Create Project form</h5>
                             <hr />
                             <form onSubmit={this.onSubmit}>
+
                                 <div className="form-group">
                                 {/* note: */}
-                                    <input type="text" name="projectName" value={this.state.projectName}  onChange={this.onChange} className="form-control form-control-lg " placeholder="Project Name" />
+                                    <input type="text" 
+                                        name="projectName" 
+                                        value={this.state.projectName}  
+                                        onChange={this.onChange} 
+                                        className={classnames("form-control form-control-lg",{"is-invalid":errors.projectName})} 
+                                        placeholder="Project Name" />
+                                    {errors.projectName && (
+                                        <div className="invalid-feedback">{errors.projectName}</div>
+                                    )}
                                 </div>
+
                                 <div className="form-group">
-                                    <input type="text" name="projectIdentifier" value={this.state.projectIdentifier} onChange={this.onChange} className="form-control form-control-lg" placeholder="Unique Project ID"
-                                        />
+                                    <input type="text" 
+                                        name="projectIdentifier" 
+                                        value={this.state.projectIdentifier} 
+                                        onChange={this.onChange} 
+                                        className={classnames("form-control form-control-lg",{"is-invalid":errors.projectIdentifier})} 
+                                        placeholder="Unique Project ID"/>
+                                    {errors.projectName && (
+                                        <div className="invalid-feedback">{errors.projectIdentifier}</div>
+                                    )}
+
                                 </div>
+
+
                                 {/*  disabled for Edit Only!! remove "disabled" for the Create operation  */}
                                 <div className="form-group">
-                                    <textarea  name="description" value={this.state.description} onChange={this.onChange} className="form-control form-control-lg" placeholder="Project Description"></textarea>
+                                    <textarea  name="description" 
+                                        value={this.state.description} 
+                                        onChange={this.onChange} 
+                                        className={classnames("form-control form-control-lg",{"is-invalid":errors.description})} 
+                                        placeholder="Project Description"></textarea>
+                                    {errors.projectName && (
+                                        <div className="invalid-feedback">{errors.description}</div>
+                                    )}
                                 </div>
+
+
                                 <h6>Start Date</h6>
                                 <div className="form-group">
-                                    <input type="date" name="start_date"  value={this.state.start_date} onChange={this.onChange} className="form-control form-control-lg" />
+                                    <input type="date" name="start_date"  value={this.state.start_date} onChange={this.onChange} className={"form-control form-control-lg"} />
                                 </div>
+
+
                                 <h6>Estimated End Date</h6>
                                 <div className="form-group">
-                                    <input type="date" name="end_date" value={this.state.end_date} onChange={this.onChange} className="form-control form-control-lg" />
+                                    <input type="date" name="end_date" value={this.state.end_date} onChange={this.onChange} className={"form-control form-control-lg"} />
                                 </div>
 
                                 <input type="submit" className="btn btn-primary btn-block mt-4" />
@@ -99,8 +142,16 @@ class AddProject extends Component {
 
 /* this one is a contrains. just saying tha createProject is rquired proptype for AddProject to work properly */
 AddProject.propTypes={
-    createProject:PropTypes.func.isRequired
+    createProject:PropTypes.func.isRequired,
+    errors : PropTypes.object.isRequired
 }
 
+const mapStateToProps = state => ({
+    errors: state.errors
+});
 
-export default connect(null, {createProject}) (AddProject);
+
+export default connect(
+    mapStateToProps,
+     {createProject}
+) (AddProject);
