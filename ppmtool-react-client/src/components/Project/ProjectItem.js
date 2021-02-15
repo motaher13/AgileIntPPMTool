@@ -1,15 +1,20 @@
-const ProjectItem=()=>{
-    return(
+import { Component } from "react";
+
+class ProjectItem extends Component{
+    render(){
+        /* note: here {} destructuring the props, assigining props.project to a constant named project */
+        const {project} = this.props;
+        return(
         /* <!-- Project Item Component --> */
         <div className="container">
             <div className="card card-body bg-light mb-3">
                 <div className="row">
                     <div className="col-2">
-                        <span className="mx-auto">REACT</span>
+                        <span className="mx-auto">{project.projectIdentifier}</span>
                     </div>
                     <div className="col-lg-6 col-md-4 col-8">
-                        <h3>Spring / React Project</h3>
-                        <p>Project to create a Kanban Board with Spring Boot and React</p>
+                        <h3>{project.projectName}</h3>
+                        <p>{project.description}</p>
                     </div>
                     <div className="col-md-4 d-none d-lg-block">
                         <ul className="list-group">
@@ -35,6 +40,8 @@ const ProjectItem=()=>{
         </div>
         /* End of Project Item Component  */
     );
+    }
+    
 }
 
 export default ProjectItem;

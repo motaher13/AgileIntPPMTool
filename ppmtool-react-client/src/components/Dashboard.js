@@ -21,33 +21,64 @@
 
 import CreateProjectButton from './Project/CreateProjectButton';
 import ProjectItem from './Project/ProjectItem';
+import { connect } from "react-redux";
+import { getProjects } from "../actions/projectActions";
+import { Component } from 'react';
+import PropTypes from "prop-types";
 
+class Dashboard extends Component{
 
-const Dashboard=()=>{
-    return(
+    componentDidMount(){
+        /* note: calls getProjects() in projectAction.js on mount */
+        this.props.getProjects();
+    }
+
+    render(){
+
+        const {projects} = this.props.project;
+
         /* Dashboard Component (Project Item included) */
+        return(
 
-        <div className="projects">
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-12">
-                        <h1 className="display-4 text-center">Projects</h1>
-                        <br />
-                        <CreateProjectButton/>
-                        <br />
-                        <hr />
+            <div className="projects">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
+                            <h1 className="display-4 text-center">Projects</h1>
+                            <br />
+                            <CreateProjectButton/>
+                            <br />
+                            <hr />
+                            {
+                                projects.map(project=>(
+                                    <ProjectItem key={project.id} project={project}/>
+                                ))
+                            }
+                            
 
-                        <ProjectItem/>
-
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-/* <!-- End of Dashboard Component --> */
-        
+    /* <!-- End of Dashboard Component --> */
+            
 
-    );
+        );
+    }
 }
 
-export default Dashboard
+Dashboard.propTypes={
+    project:PropTypes.object.isRequired, /* note: means project prop must be object and required */
+    getProjects:PropTypes.func.isRequired
+}
+
+
+
+const mapStateToProps = state =>({ 
+    /* we are mapping state values to prop values -> the value those will be passed to childs */
+    project : state.project,
+
+})
+
+export default connect(mapStateToProps, {getProjects})(Dashboard) 
