@@ -18,9 +18,12 @@ public class Project {
     private String projectName;
 
     /* note: */
+    /* note: this unique constraint works in database level, not in jpa*/
+    /* note: updateble works while creating sql for the object, means variable value could be updated
+    * in the object, but it won't get to the database*/
     @NotBlank(message ="Project Identifier is required")
     @Size(min = 4, max = 5, message = "Please set 4 to 5 char")
-    @Column(updatable = false, unique = true) /* note: this unique constraint works in database level, not in jpa*/
+    @Column(updatable = false, unique = true)
     private String projectIdentifier;
 
     @NotBlank(message = "Project description is required")
@@ -40,8 +43,20 @@ public class Project {
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_At;
 
+    /* note: value of mappedBy have to be used to point this object in the child object*/
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
+    private Backlog backlog;
+
 
     public Project() {
+    }
+
+    public Backlog getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Backlog backlog) {
+        this.backlog = backlog;
     }
 
     public Long getId() {
