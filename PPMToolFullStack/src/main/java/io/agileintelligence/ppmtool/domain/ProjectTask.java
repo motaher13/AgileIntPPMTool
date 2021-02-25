@@ -1,5 +1,7 @@
 package io.agileintelligence.ppmtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -19,9 +21,14 @@ public class ProjectTask {
     private Integer priority;
     private Date dueDate;
     //ManyToOne with Backlog
+    /* note: cascade refresh will refresh it's parent object */
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Backlog backlog;
 
     @Column(updatable = false)
-    private String projectIdentifer;
+    private String projectIdentifier;
     private Date create_At;
     private Date update_At;
 
@@ -84,12 +91,12 @@ public class ProjectTask {
         this.dueDate = dueDate;
     }
 
-    public String getProjectIdentifer() {
-        return projectIdentifer;
+    public String getProjectIdentifier() {
+        return projectIdentifier;
     }
 
-    public void setProjectIdentifer(String projectIdentifer) {
-        this.projectIdentifer = projectIdentifer;
+    public void setProjectIdentifier(String projectIdentifer) {
+        this.projectIdentifier = projectIdentifer;
     }
 
     public Date getCreate_At() {
@@ -118,6 +125,14 @@ public class ProjectTask {
         this.update_At = new Date();
     }
 
+    public Backlog getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Backlog backlog) {
+        this.backlog = backlog;
+    }
+
     @Override
     public String toString() {
         return "ProjectTask{" +
@@ -128,7 +143,7 @@ public class ProjectTask {
                 ", status='" + status + '\'' +
                 ", priority=" + priority +
                 ", dueDate=" + dueDate +
-                ", projectIdentifer='" + projectIdentifer + '\'' +
+                ", projectIdentifer='" + projectIdentifier + '\'' +
                 ", create_At=" + create_At +
                 ", update_At=" + update_At +
                 '}';
