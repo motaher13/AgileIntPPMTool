@@ -12,7 +12,7 @@ public class ProjectTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(updatable = false)
+    @Column(updatable = false, unique = true)
     private String projectSequence;
     @NotBlank(message = "Please include a project summary")
     private String summary;
@@ -21,8 +21,10 @@ public class ProjectTask {
     private Integer priority;
     private Date dueDate;
     //ManyToOne with Backlog
-    /* note: cascade refresh will refresh it's parent object */
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    /* note: cascade refresh will refresh it's parent object, that will create a issue, as
+    * the backlog holding the list, after deleting a projectTask, that task will be inserted to
+    * the database again because of this, so we have to shift the refresh to the parent side */
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
     @JsonIgnore
     private Backlog backlog;

@@ -29,7 +29,9 @@ public class Backlog {
     private Project project;
 
     //OneToMany projecttasks
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "backlog")
+    /* note: orphan removal will remove a entity from list when deleted form db*/
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "backlog"
+            , orphanRemoval = true)
     private List<ProjectTask> projectTasks=new ArrayList<>();
 
 
