@@ -13,6 +13,7 @@ import java.util.Date;
 /* note: this UserDetails coming from spring security*/
 
 @Entity
+/* note: as user implements userdetails, userrepository will load user by username and spring security will use it to authenticate*/
 public class User implements UserDetails{
 
     @Id
