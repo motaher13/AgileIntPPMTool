@@ -44,6 +44,12 @@ public class Project {
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_At;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private User user;
+
+    private String ProjectLeader;
+
     /* note: value of mappedBy have to be used to point this object in the child object
     * jsonIgnore to ignore backlog while getting project from db
     * */
@@ -125,6 +131,22 @@ public class Project {
 
     public void setUpdated_At(Date updated_At) {
         this.updated_At = updated_At;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getProjectLeader() {
+        return ProjectLeader;
+    }
+
+    public void setProjectLeader(String projectLeader) {
+        ProjectLeader = projectLeader;
     }
 
     /* note: */

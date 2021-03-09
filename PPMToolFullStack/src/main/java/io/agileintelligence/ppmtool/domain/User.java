@@ -7,8 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /* note: this UserDetails coming from spring security*/
 
@@ -37,6 +39,9 @@ public class User implements UserDetails{
     private Date update_At;
 
     //OneToMany with Project
+
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
+    private List<Project> projects = new ArrayList<>();
 
     public User() {
     }
@@ -107,8 +112,14 @@ public class User implements UserDetails{
         this.update_At = new Date();
     }
 
+    public List<Project> getProjects() {
+        return projects;
+    }
 
-     /*UserDetails
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+/*UserDetails
 
     interface methods*/
 
