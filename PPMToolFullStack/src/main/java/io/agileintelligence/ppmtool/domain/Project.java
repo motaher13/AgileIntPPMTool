@@ -48,7 +48,7 @@ public class Project {
     @JsonIgnore
     private User user;
 
-    private String ProjectLeader;
+    private String projectLeader;
 
     /* note: value of mappedBy have to be used to point this object in the child object
     * jsonIgnore to ignore backlog while getting project from db
@@ -142,11 +142,11 @@ public class Project {
     }
 
     public String getProjectLeader() {
-        return ProjectLeader;
+        return projectLeader;
     }
 
     public void setProjectLeader(String projectLeader) {
-        ProjectLeader = projectLeader;
+        this.projectLeader = projectLeader;
     }
 
     /* note: */
